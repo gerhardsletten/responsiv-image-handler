@@ -14,15 +14,15 @@ promisify(svgo.optimize)
 
 class ImageHandler {
   constructor({
-    output,
     publicPath,
+    outputPath,
     sizes = [320, 640, 960, 1100, 1600],
     quality = 65,
     placeholderSize = 40,
   }) {
-    this.output = output
-    this.sizes = sizes
     this.publicPath = publicPath
+    this.outputPath = outputPath
+    this.sizes = sizes
     this.mimes = {
       jpg: 'image/jpeg',
       jpeg: 'image/jpeg',
@@ -34,8 +34,8 @@ class ImageHandler {
     this.placeholderSize = placeholderSize
   }
   async clear() {
-    await rimraf(this.output)
-    await mkdirp(this.output)
+    await rimraf(this.outputPath)
+    await mkdirp(this.outputPath)
   }
   createPlaceholder(data, mime) {
     return `data:${mime};base64,${data.toString('base64')}`
@@ -78,7 +78,7 @@ class ImageHandler {
     const src = `${file.digest}.${file.ext}`
     const readIn = await readFile(file.path, 'utf-8')
     const { data } = await svgo.optimize(readIn)
-    const savePath = `${this.output}/${src}`
+    const savePath = `${this.outputPath}/${src}`
     await writeFile(savePath, data, 'utf-8')
     return [{ src }]
   }
@@ -185,7 +185,7 @@ class ImageHandler {
         })
       } else {
         const src = `${baseName}.${ext}`
-        const savePath = `${this.output}/${src}`
+        const savePath = `${this.outputPath}/${src}`
         resized.toFile(savePath, (err, { width, height }) => {
           if (err) {
             return reject(err)

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "format": "prettier --write \"index.js\" \"__tests__/**/*.js\"",
-    "lint": "eslint -c .eslintrc index.js __tests__",
+    "lint": "eslint index.js __tests__",
     "jest": "jest",
     "test": "npm run lint && npm run jest"
   },
@@ -56,7 +56,7 @@
     },
     "env": {
       "node": true,
-      "es6": false,
+      "es6": true,
       "jest": true
     }
   },
